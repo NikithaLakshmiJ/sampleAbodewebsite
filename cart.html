@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - MyStore</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <script>
+        function buylayer(){
+            window.buyproductlayer=window.buyproductlayer || [];
+            buyproductlayer.push({
+                event: "buy",
+                buydata:{
+                    pageName:document.title,
+                    pageURL:window.location.href
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>MyStore</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="cart">
+            <h2>Shopping Cart</h2>
+            <ul id="cart-items"></ul>
+            <p>Total: $<span id="total">0.00</span></p>
+            <button onclick="buyItems(); buylayer()">Buy</button>
+        </section>
+    </main>
+    <script>
+        function loadCart() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartItems = document.getElementById('cart-items');
+            let total = 0;
+
+            cart.forEach(item => {
+                let li = document.createElement('li');
+                li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+                cartItems.appendChild(li);
+                total += item.price;
+            });
+
+            document.getElementById('total').textContent = total.toFixed(2);
+        }
+
+        function buyItems() {
+            localStorage.removeItem('cart');
+            window.location.href = 'contact.html';
+        }
+
+        window.onload = loadCart;
+    </script>
+</body>
+</html>
